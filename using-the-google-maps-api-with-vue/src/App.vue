@@ -2,46 +2,25 @@
   <div class="App"/>
 </template>
 
+
 <script>
 import MarkerClusterer from '@google/markerclusterer';
 
 import gmapsInit from './utils/gmaps';
 
 const locations = [
+
   {
     position: {
-      lat: 48.160910,
-      lng: 16.383330,
+      lat: 58.3792364,
+      lng: 26.720529,
     },
-  },
+  },  
+  
   {
     position: {
-      lat: 48.174270,
-      lng: 16.329620,
-    },
-  },
-  {
-    position: {
-      lat: 48.146140,
-      lng: 16.297030,
-    },
-  },
-  {
-    position: {
-      lat: 48.135830,
-      lng: 16.194460,
-    },
-  },
-  {
-    position: {
-      lat: 48.306091,
-      lng: 14.286440,
-    },
-  },
-  {
-    position: {
-      lat: 47.503040,
-      lng: 9.747070,
+      lat: 58.3823081,
+      lng: 26.7348673,
     },
   },
 ];
@@ -54,17 +33,29 @@ export default {
       const geocoder = new google.maps.Geocoder();
       const map = new google.maps.Map(this.$el);
 
-      geocoder.geocode({ address: `Austria` }, (results, status) => {
+      geocoder.geocode({ address: `Tartu, Estonia` }, (results, status) => {
         if (status !== `OK` || !results[0]) {
           throw new Error(status);
         }
 
         map.setCenter(results[0].geometry.location);
         map.fitBounds(results[0].geometry.viewport);
+        map.setZoom(15);
+      });
+
+      var infoWindowContent = '<div class="info_content">' +
+        '<h3>Parking Spot 1</h3>' +
+        '<h4>Price: 1 EUR / 2 hour</h4>' +
+        '<p>AS Ühisteenused, Magistri, 51005 Tartu, Estonia</p>' +
+        '</div>';
+
+      var infowindow = new google.maps.InfoWindow({
+        content:infoWindowContent
       });
 
       const markerClickHandler = (marker) => {
-        map.setZoom(13);
+        infowindow.open(map, marker)
+        map.setZoom(18);
         map.setCenter(marker.getPosition());
       };
 
